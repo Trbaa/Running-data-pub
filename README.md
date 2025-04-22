@@ -25,3 +25,8 @@ That motivated me to sit down and build something useful from scratch — combin
 - Real-time tracking and prediction
 - Web or mobile interface for live feedback while running
 - Smarter models and personalized predictions
+
+  ## Try it yourself!
+  - Add folder 'data'
+  - Import your gpx files into 'data'
+  - Start the program :)
