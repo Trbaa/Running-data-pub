@@ -25,3 +25,9 @@ That motivated me to sit down and build something useful from scratch — combin
 - Real-time tracking and prediction
 - Web or mobile interface for live feedback while running
 - Smarter models and personalized predictions
+
+## Try it yourself
+
+-Put your gpx files in 'data'
+-Start the program
+-Enjoj :)
