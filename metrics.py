@@ -1,5 +1,4 @@
 from geopy.distance import geodesic
-import pandas as pd
 
 def compute_metrics(df):
     df['delta_km'] = df.apply(

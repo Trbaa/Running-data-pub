@@ -4,6 +4,7 @@ from utils import export_to_csv
 from eda_running import perform_eda
 from training import train_and_evaluate
 from predict import predict_finish_time
+from graphs import make_graph
 
 if __name__ == "__main__":
     combined_df = load_all_gpx("data/")
@@ -15,3 +16,4 @@ if __name__ == "__main__":
     export_to_csv(combined_df, "output/combined_data_with_predictions.csv")
     perform_eda(combined_df)
     
+    make_graph()

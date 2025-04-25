@@ -1,15 +1,14 @@
-import pandas as pd
-from sklearn.preprocessing import StandardScaler
 import joblib
 
 def load_model():
 
-    model = joblib.load('trained_model.pkl')
-    return model
+    lr_model = joblib.load('model/trained_model_lr.pkl')
+    rf_model = joblib.load('model/trained_model_rf.pkl')
+    return lr_model,rf_model
 
 def predict_finish_time(df):
 
-    model = load_model()
+    lr_model,rf_model = load_model()
 
     features = [
     'speed_kmh',
@@ -21,10 +20,9 @@ def predict_finish_time(df):
 ]
     X = df[features]
 
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    scaler = joblib.load('scaler.pkl')
+    X_scaled = scaler.transform(X)
 
-    predictions = model.predict(X_scaled)
-
-    df['predicted_time_to_finish'] = predictions
+    df['lr_predicted_time'] = lr_model.predict(X_scaled)
+    df['rf_predicted_time'] = rf_model.predict(X_scaled)
     return df
