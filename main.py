@@ -5,8 +5,16 @@ from eda_running import perform_eda
 from training import train_and_evaluate
 from predict import predict_finish_time
 from graphs import make_graph
+import os
 
 if __name__ == "__main__":
+
+
+    REQUIRED_FOLDERS = ["model", "diagrams", "predictions", "data"]
+
+    for folder in REQUIRED_FOLDERS:
+        os.makedirs(folder, exist_ok=True)
+
     combined_df = load_all_gpx("data/")
     combined_df = compute_metrics(combined_df)
 
