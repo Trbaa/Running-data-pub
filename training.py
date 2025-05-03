@@ -1,13 +1,15 @@
-# training.py
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from model import train_model, evaluate_model
+from model import train_model_lr, evaluate_model, train_model_rf
 import joblib
 
 def prepare_data(df):
     
-    df['time_to_finish'] = df['distance_km'] / df['speed_kmh'].replace(0, 1)
+    total_distance_km = df['distance_km'].max()
+
+    df['remaining_distance_km'] = total_distance_km - df['distance_km']
+    df['speed_kmh'] = df['speed_kmh'].replace(0, 1e-3)  #deljenje 0
+    df['time_to_finish'] = df['remaining_distance_km'] / df['speed_kmh']
 
     # Odabir feature-a (svi relevantni podaci koji će uticati na model)
     features = [
@@ -19,13 +21,13 @@ def prepare_data(df):
     'distance_km'
 ]
     X = df[features]
-    
-    # Ciljna promenljiva (npr. vreme do cilja ili ETA)
-    y = df['time_to_finish']  # Ova kolona je sada dodata
+    y = df['time_to_finish'] 
 
     # Standardizacija podataka
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
+
+    joblib.dump(scaler, 'scaler.pkl')
 
     # Podela na trening i test skup (80% za trening, 20% za testiranje)
     X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
@@ -38,7 +40,9 @@ def train_and_evaluate(df):
     X_train, X_test, y_train, y_test = prepare_data(df)
 
     # Treniranje modela
-    model = train_model(X_train, y_train)
+    model_lr = train_model_lr(X_train, y_train)
+    model_rf = train_model_rf(X_train,y_train)
 
     # Evaluacija modela
-    evaluate_model(model, X_test, y_test)
+    evaluate_model(model_lr, X_test, y_test,'Linear Regression')
+    evaluate_model(model_rf,X_test,y_test,'Random Forest')
